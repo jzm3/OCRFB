@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCRFB - OCR文字识别软件</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 20px rgba(106, 17, 203, 0.2);
+        }
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .download-section {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+        }
+        .download-card {
+            background: white;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            flex: 1;
+            min-width: 280px;
+            max-width: 400px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-top: 5px solid #2575fc;
+        }
+        .download-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 22px rgba(0, 0, 0, 0.12);
+        }
+        .download-card h2 {
+            color: #2575fc;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        .download-card p {
+            color: #666;
+            margin-bottom: 25px;
+            min-height: 48px;
+        }
+        .btn {
+            display: inline-block;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(106, 17, 203, 0.3);
+        }
+        .btn:hover {
+            box-shadow: 0 6px 18px rgba(106, 17, 203, 0.5);
+            background: linear-gradient(to right, #5c0eb9, #1c6ae4);
+        }
+        section {
+            background: white;
+            padding: 35px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        section h2 {
+            color: #2d3748;
+            border-bottom: 3px solid #e2e8f0;
+            padding-bottom: 12px;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+        }
+        section h2::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 24px;
+            background: #2575fc;
+            margin-right: 12px;
+            border-radius: 3px;
+        }
+        .contact-info {
+            background-color: #e8f4ff;
+            border-left: 5px solid #2575fc;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .contact-info p {
+            margin: 8px 0;
+        }
+        .log-item {
+            background: #f8fafc;
+            border-left: 4px solid #cbd5e0;
+            padding: 18px;
+            margin-bottom: 20px;
+            border-radius: 0 6px 6px 0;
+        }
+        .log-item h3 {
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+        .log-item ul {
+            padding-left: 20px;
+            color: #4a5568;
+        }
+        .log-item li {
+            margin-bottom: 6px;
+        }
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-right: 10px;
+            margin-bottom: 8px;
+        }
+        .tag-new {
+            background-color: #c6f6d5;
+            color: #22543d;
+        }
+        .tag-opt {
+            background-color: #bee3f8;
+            color: #2a4365;
+        }
+        .tag-fix {
+            background-color: #fed7d7;
+            color: #742a2a;
+        }
+        .tag-unknown {
+            background-color: #e2e8f0;
+            color: #4a5568;
+        }
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            color: #718096;
+            font-size: 0.95rem;
+        }
+        .note {
+            background-color: #fffaf0;
+            border: 1px dashed #d69e2e;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            color: #744210;
+        }
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            h1 {
+                font-size: 2.2rem;
+            }
+            .download-section {
+                flex-direction: column;
+                align-items: center;
+            }
+            .download-card {
+                width: 100%;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>OCRFB</h1>
+        <p class="subtitle">一款专注于摄像头与本地图片的文字识别（OCR）处理软件。当前版本：v9.0.0.0</p>
+    </header>
+
+    <main>
+        <div class="download-section">
+            <div class="download-card">
+                <h2>📖 说明文档下载</h2>
+                <p>包含详细的软件使用指南、功能说明及.iocr9文件编写方法。</p>
+                <a href="https://github.com/jzm3/OCRFB9/releases/download/%E6%AD%A3%E5%BC%8F%E7%89%88/OCR7.0.docx" class="btn" download>下载说明文档 (.docx)</a>
+            </div>
+            <div class="download-card">
+                <h2>⚙️ 软件安装包下载</h2>
+                <p>获取最新版本的OCRFB安装程序，开始您的文字识别体验。</p>
+                <a href="https://github.com/jzm3/OCRFB9/releases/download/%E6%AD%A3%E5%BC%8F%E7%89%88/OCRApp7.0_Setup.exe" class="btn" download>下载安装包 (.exe)</a>
+            </div>
+        </div>
+
+        <section id="help">
+            <h2>帮助文档</h2>
+            <div class="contact-info">
+                <p><strong>联系我们：</strong></p>
+                <p>📧 邮箱：<a href="mailto:ocrfb@outlook.com">ocrfb@outlook.com</a></p>
+                <p>📞 电话：18157716605</p>
+            </div>
+            <h3>使用方法</h3>
+            <ol>
+                <li><strong>基本使用：</strong>在桌面上找到快捷方式，双击打开。</li>
+                <li><strong>摄像头识别功能：</strong>
+                    <ul>
+                        <li>实时显示摄像头画面</li>
+                        <li>点击"捕获识别"拍摄当前画面进行识别</li>
+                        <li>识别结果在下方文本框显示</li>
+                        <li>可进行复制、清空结果等操作</li>
+                    </ul>
+                </li>
+                <li><strong>本地图片识别：</strong>支持选择本地图片文件或直接输入图片路径进行识别。</li>
+                <li><strong>退出系统：</strong>点击主界面"退出系统"按钮。</li>
+                <li><strong>卸载程序：</strong>运行安装目录下的 unins000.exe。</li>
+            </ol>
+            <h3>常见问题</h3>
+            <ul>
+                <li><strong>出现「识别错误」提示：</strong>请调整拍摄角度或确保图片清晰度。</li>
+                <li><strong>程序未响应：</strong>当前版本(v8.5.0.0)存在已知稳定性问题，建议保存进度后重启程序，该问题将在v10.0.0.0重点优化。</li>
+                <li><strong>按钮点击无反应：</strong>请检查软件版本或重启程序，若问题依旧可通过邮箱反馈。</li>
+            </ul>
+            <div class="note">
+                <p>💡 <strong>关于 .iocr9 文件：</strong>这是 v9.0.0.0 新增的关联文件，用于指定图片路径、格式和权限，以实现特定或批量识别任务。具体的编写方法请参阅完整的说明文档。</p>
+            </div>
+        </section>
+
+        <section id="changelog">
+            <h2>更新日志</h2>
+            <p><em>修复(Fix)：代表被修正的错误 | 优化(Optimization)：代表改进的内容 | 新增(New)：代表新增加的功能 | 未知(Unknown)：代表文件丢失</em></p>
+
+            <div class="log-item">
+                <h3><span class="tag tag-new">新增</span> v9.0.0.0</h3>
+                <ul>
+                    <li>主程序大更新，添加关联文件 .iocr9。</li>
+                    <li>将更新日志移到安装包前方。</li>
+                </ul>
+            </div>
+            <div class="log-item">
+                <h3><span class="tag tag-new">新增</span> v8.5.0.0</h3>
+                <ul>
+                    <li>添加 《帮助文档》。</li>
+                </ul>
+            </div>
+            <div class="log-item">
+                <h3><span class="tag tag-opt">优化</span> <span class="tag tag-new">新增</span> v8.0.0.0</h3>
+                <ul>
+                    <li>正式将 OCRApp 更名为 OCRFB (OCR翻版)。</li>
+                    <li>对安装包进行了大更新，添加多语言选择、用户协议、密钥许可等界面。<strong>（自此版本起，软件不再开源，需密钥安装）</strong></li>
+                    <li>将安装包中的互联网地址更改为 <a href="https://tesseract-ocr.github.io/" target="_blank">https://tesseract-ocr.github.io/</a>。</li>
+                    <li>更改软件图标。</li>
+                </ul>
+            </div>
+            <div class="log-item">
+                <h3><span class="tag tag-opt">优化</span> <span class="tag tag-fix">修复</span> v7.0.0.0 学生版</h3>
+                <ul>
+                    <li>针对低分辨率屏幕（&lt; 1600*900）优化了摄像头显示区域的大小，以确保下方功能键正常显示。</li>
+                </ul>
+            </div>
+            <div class="log-item">
+                <h3><span class="tag tag-new">新增</span> <span class="tag tag-opt">优化</span> v7.0.0.0</h3>
+                <ul>
+                    <li>新增主界面，包含“摄像头识别”和“本地图片识别”按钮。</li>
+                    <li>新增摄像头识别功能。</li>
+                    <li>抛弃 empty.jpg 占位依赖。</li>
+                </ul>
+            </div>
+            <div class="log-item">
+                <h3><span class="tag tag-unknown">未知</span> v3.0.0.0 到 v6.0.0.0</h3>
+                <ul>
+                    <li>版本记录文件丢失。</li>
+                </ul>
+            </div>
+            <div class="log-item">
+                <h3><span class="tag tag-new">新增</span> v2.0.0.0</h3>
+                <ul>
+                    <li>添加 GUI 图形化界面。</li>
+                </ul>
+            </div>
+            <div class="log-item">
+                <h3><span class="tag tag-unknown">未知</span> v1.0.0.0</h3>
+                <ul>
+                    <li>版本记录文件丢失。</li>
+                </ul>
+            </div>
+            <p style="margin-top: 25px; text-align: right; font-style: italic; color: #666;">帮助文档 & .iocr9编码编写方法 ---- 写于 2025/04/23</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 OCRFB 项目组. 本页面为软件信息发布页。</p>
+        <p>软件问题反馈请联系：<a href="mailto:ocrfb@outlook.com">ocrfb@outlook.com</a></p>
+    </footer>
+</body>
+</html>
